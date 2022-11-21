@@ -31,7 +31,7 @@ export const handler = async (event) => {
             todoistApi.addTask({
               content: `${payload.resource.name} with ${webhookPayload.payload.name}.`,
               projectId: todoistProjectId,
-              description: `You've got a ${payload.resource.name} meeting. Link for meeting ${payload.resource.location.join_url}`,
+              description: `You've got a ${payload.resource.name} meeting. Link to the meeting ${payload.resource.location.join_url}`,
               dueDate: payload.resource.start_time,
               priority: 2
             }).then( task => console.log(`New todoist task \`${task.content}\` created 🚀`))
