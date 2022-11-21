@@ -25,7 +25,7 @@ export const handler = async (event) => {
             }
           })
           const payload = await response.json() as any
-          console.log(payload)
+          console.log(JSON.stringify(payload, null, 2))
           if (payload.resource) {
             const todoistProjects = await todoistApi.getProjects()
             const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
@@ -34,7 +34,7 @@ export const handler = async (event) => {
               projectId: todoistProjectId,
               description: `You've got a ${payload.resource.name} about`,
               dueDate: payload.resource.start_time,
-              priority: 1
+              priority: 2
             })
           }
           break;
