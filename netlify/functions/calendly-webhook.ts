@@ -7,10 +7,7 @@ const todoistApi = new TodoistApi(process.env.TODOIST_USER_TOKEN)
 
 function getTodoistProjectId(calendlyEventName, todoistProjects) {
   const todoistProjectName = calendlyEventName.includes('TKYT') ? 'TKYT' : 'Inbox'
-  const todoistProject = todoistProjects.find((project) => project.name == todoistProjectName)
-  console.log({ calendlyEventName})
-  console.log({todoistProjectName})
-  console.log({todoistProject})
+  const todoistProject = todoistProjects.find((project) => project.name.includes(todoistProjectName))
   return todoistProject.id
 }
 export const handler = async (event) => {
