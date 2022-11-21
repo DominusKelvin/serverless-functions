@@ -25,15 +25,16 @@ export const handler = async (event) => {
             }
           })
           const payload = await response.json() as any
+          console.log(payload)
           if (payload.resource) {
             const todoistProjects = await todoistApi.getProjects()
             const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
             todoistApi.addTask({
               content: `${payload.resource.name} with ${webhookPayload.payload.name}`,
               projectId: todoistProjectId,
-              description: `You've got a ${payload.project}`,
+              description: `You've got a ${payload.resource.name} about`,
               dueDate: payload.resource.start_time,
-              priority: 2
+              priority: 1
             })
           }
           break;
