@@ -42,7 +42,7 @@ export const handler = async (event) => {
       }
     }
   } catch (error) {
-    console.log("Could not parse JSON")
+    console.log(error)
   }
   return {
     statusCode: 200,
