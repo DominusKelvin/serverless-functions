@@ -35,7 +35,8 @@ export const handler = async (event) => {
               description: `You've got a ${payload.resource.name} about`,
               dueDate: payload.resource.start_time,
               priority: 2
-            })
+            }).then( task => console.log(task))
+            .catch(error => console.log(error))
           }
           break;
         default:
