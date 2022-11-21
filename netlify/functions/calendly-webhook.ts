@@ -25,17 +25,16 @@ export const handler = async (event) => {
             }
           })
           const payload = await response.json() as any
-          console.log(JSON.stringify(payload, null, 2))
           if (payload.resource) {
             const todoistProjects = await todoistApi.getProjects()
             const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
             todoistApi.addTask({
-              content: `${payload.resource.name} with ${webhookPayload.payload.name}`,
+              content: `${payload.resource.name} with ${webhookPayload.payload.name}.`,
               projectId: todoistProjectId,
-              description: `You've got a ${payload.resource.name} about`,
+              description: `You've got a ${payload.resource.name} meeting. Link for meeting ${payload.resource.location.join_url}`,
               dueDate: payload.resource.start_time,
               priority: 2
-            }).then( task => console.log(task))
+            }).then( task => console.log(`New todoist task create: ${task.content}`))
             .catch(error => console.log(error))
           }
           break;
