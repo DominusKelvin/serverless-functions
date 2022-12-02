@@ -1,6 +1,6 @@
 {
   "name": "koo-serverless-functions",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "@doist/todoist-api-typescript": "^2.1.2",
     "dotenv": "^16.0.3",
