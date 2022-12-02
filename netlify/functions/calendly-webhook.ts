@@ -18,25 +18,27 @@ export const handler = async (event) => {
       switch (webhookPayload.event) {
         case 'invitee.created':
           const eventUuid = webhookPayload.payload.uri.split('/')[4] // gets the UUID from the URI of the created event
-          const response = await fetch(`https://api.calendly.com/scheduled_events/${eventUuid}`, {
+          fetch(`https://api.calendly.com/scheduled_events/${eventUuid}`, {
             headers: {
               // @ts-ignore
               'Authorization': `Bearer ${process.env.CALENDLY_API_TOKEN}`
             }
-          })
-          const payload = await response.json() as any
-          if (payload.resource) {
-            const todoistProjects = await todoistApi.getProjects()
-            const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
-            todoistApi.addTask({
-              content: `${payload.resource.name} with ${webhookPayload.payload.name}.`,
-              projectId: todoistProjectId,
-              description: `You've got a ${payload.resource.name} meeting. ${payload.resource.location.join_url || 'Send an Ecamm Live link'}`,
-              dueDate: payload.resource.start_time,
-              priority: 4
-            }).then( task => console.log(`New todoist task \`${task.content}\` created 🚀`))
-            .catch(error => console.log(error))
-          }
+          }).then((response) => response.json() as any)
+            .then((payload) => {
+              if (payload.resource) {
+                todoistApi.getProjects()
+                  .then(todoistProjects => {
+                    const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
+                    todoistApi.addTask({
+                      content: `${payload.resource.name} with ${webhookPayload.payload.name}.`,
+                      projectId: todoistProjectId,
+                      description: `You've got a ${payload.resource.name} meeting. ${payload.resource.location.join_url || 'Send an Ecamm Live link'}`,
+                      dueDate: payload.resource.start_time,
+                      priority: 4
+                    }).then(task => console.log(`New todoist task \`${task.content}\` created 🚀`))
+                  })
+              }
+            })
           break;
         default:
           break;
