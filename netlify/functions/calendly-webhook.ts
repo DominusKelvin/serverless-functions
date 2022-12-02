@@ -28,12 +28,13 @@ export const handler = async (event) => {
           if (payload.resource) {
             const todoistProjects = await todoistApi.getProjects()
             const todoistProjectId = getTodoistProjectId(payload.resource.name, todoistProjects)
+            const description =
             todoistApi.addTask({
               content: `${payload.resource.name} with ${webhookPayload.payload.name}.`,
               projectId: todoistProjectId,
-              description: `You've got a ${payload.resource.name} meeting. Link to the meeting ${payload.resource.location.join_url}`,
+              description: `You've got a ${payload.resource.name} meeting. ${payload.resource.location.join_url || 'Send an Ecamm Live link'}`,
               dueDate: payload.resource.start_time,
-              priority: 2
+              priority: 4
             }).then( task => console.log(`New todoist task \`${task.content}\` created 🚀`))
             .catch(error => console.log(error))
           }
